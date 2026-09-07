@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ha-local-kit"
+version = "0.1.0"
+description = "Local Home Assistant tooling: honest electricity timelines, room and 3D dashboards, fixed TCP relays"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = ["tzdata>=2025.1"]
+
+[project.optional-dependencies]
+sgcc = ["playwright==1.62.0"]
+dev = ["PyYAML>=6.0,<7"]
+
+[project.urls]
+Repository = "https://github.com/clarkzhao/ha-local-kit"
+Issues = "https://github.com/clarkzhao/ha-local-kit/issues"
+
+[project.scripts]
+ha-local-kit-sgcc = "ha_local_kit.sgcc.collector:main"
+ha-local-kit-electricity = "ha_local_kit.sgcc.dashboard:main"
+ha-local-kit-rooms = "ha_local_kit.rooms:main"
+ha-local-kit-relays = "ha_local_kit.relays:main"
+ha-local-kit-agent = "ha_local_kit.agent:main"
+
+[tool.setuptools.packages.find]
+include = ["ha_local_kit*"]

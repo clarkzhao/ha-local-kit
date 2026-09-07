@@ -1,0 +1,17 @@
+{
+  "title": "演示房间 · 虚构设备",
+  "dashboard_path": "home-rooms",
+  "rooms": [
+    {"id": "living", "name": "起居室", "icon": "mdi:sofa", "entities": [
+      {"entity_id": "light.demo_living", "name": "主灯", "quick_toggle": true},
+      {"entity_id": "media_player.demo_tv", "name": "电视"},
+      {"entity_id": "vacuum.demo_robot", "name": "扫地机器人"},
+      {"entity_id": "climate.demo_vrf", "name": "中央空调"}
+    ]},
+    {"id": "bedroom", "name": "休息室", "icon": "mdi:bed", "entities": [
+      {"entity_id": "light.demo_bedroom", "name": "阅读灯", "quick_toggle": true},
+      {"entity_id": "cover.demo_curtain", "name": "窗帘"},
+      {"entity_id": "switch.demo_supply", "name": "常供电电源", "protected": true}
+    ]}
+  ]
+}

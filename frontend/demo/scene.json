@@ -1,0 +1,805 @@
+{
+  "synthetic": true,
+  "layout": {
+    "schema_version": 2,
+    "synthetic": true,
+    "outline": [
+      [
+        -4,
+        -3
+      ],
+      [
+        4,
+        -3
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        -4,
+        3
+      ]
+    ],
+    "camera": {
+      "isometric": [
+        10,
+        15,
+        13
+      ],
+      "target": [
+        0,
+        0.2,
+        0
+      ]
+    },
+    "rooms": [
+      {
+        "id": "living",
+        "name": "起居室",
+        "center": [
+          -2,
+          0.8
+        ]
+      },
+      {
+        "id": "bedroom",
+        "name": "休息室",
+        "center": [
+          2,
+          0.8
+        ]
+      }
+    ],
+    "models": [
+      {
+        "entity_id": "media_player.demo_tv",
+        "name": "演示电视",
+        "kind": "television",
+        "area_id": "living",
+        "position": [
+          -2,
+          -2.62
+        ],
+        "marker_height": 1.5499999999999998,
+        "position_source": "synthetic_demo",
+        "protected": false
+      },
+      {
+        "entity_id": "light.demo_living",
+        "name": "起居室主灯",
+        "kind": "led_strip",
+        "area_id": "living",
+        "position": [
+          -3.86,
+          0
+        ],
+        "marker_height": 1.5499999999999998,
+        "position_source": "synthetic_demo",
+        "protected": false
+      },
+      {
+        "entity_id": "vacuum.demo_robot",
+        "name": "演示机器人",
+        "kind": "vacuum",
+        "area_id": "living",
+        "position": [
+          -0.55,
+          -2.2
+        ],
+        "marker_height": 0.55,
+        "position_source": "synthetic_demo",
+        "protected": false
+      },
+      {
+        "entity_id": "climate.demo_vrf",
+        "name": "演示中央空调",
+        "kind": "aircon",
+        "area_id": "living",
+        "position": [
+          -2,
+          2.88
+        ],
+        "marker_height": 1.85,
+        "position_source": "synthetic_demo",
+        "protected": false
+      },
+      {
+        "entity_id": "light.demo_bedroom",
+        "name": "演示阅读灯",
+        "kind": "led_strip",
+        "area_id": "bedroom",
+        "position": [
+          3.4,
+          1.8
+        ],
+        "marker_height": 1.25,
+        "position_source": "synthetic_demo",
+        "protected": false
+      },
+      {
+        "entity_id": "cover.demo_curtain",
+        "name": "演示窗帘",
+        "kind": "curtain",
+        "area_id": "bedroom",
+        "position": [
+          3.86,
+          -0.2
+        ],
+        "marker_height": 1.4,
+        "position_source": "synthetic_demo",
+        "protected": false
+      },
+      {
+        "entity_id": "switch.demo_supply",
+        "name": "保护电源",
+        "kind": "power_switch",
+        "area_id": "bedroom",
+        "position": [
+          0.13,
+          -2.1
+        ],
+        "marker_height": 1.25,
+        "position_source": "synthetic_demo",
+        "protected": true
+      }
+    ]
+  },
+  "boxes": [
+    {
+      "name": "Foundation",
+      "position": [
+        0,
+        0,
+        -0.12
+      ],
+      "size": [
+        8.3,
+        6.3,
+        0.2
+      ],
+      "color": "#c5cdbb",
+      "extras": {}
+    },
+    {
+      "name": "Living floor",
+      "position": [
+        -2,
+        0,
+        0
+      ],
+      "size": [
+        4,
+        6,
+        0.08
+      ],
+      "color": "#d6b582",
+      "extras": {}
+    },
+    {
+      "name": "Bedroom floor",
+      "position": [
+        2,
+        0,
+        0
+      ],
+      "size": [
+        4,
+        6,
+        0.08
+      ],
+      "color": "#d3bf9d",
+      "extras": {}
+    },
+    {
+      "name": "Side wall",
+      "position": [
+        -4,
+        0,
+        0.7
+      ],
+      "size": [
+        0.12,
+        6,
+        1.4
+      ],
+      "color": "#eeeee5",
+      "extras": {}
+    },
+    {
+      "name": "Side wall",
+      "position": [
+        4,
+        0,
+        0.7
+      ],
+      "size": [
+        0.12,
+        6,
+        1.4
+      ],
+      "color": "#eeeee5",
+      "extras": {}
+    },
+    {
+      "name": "End wall",
+      "position": [
+        0,
+        -3,
+        0.7
+      ],
+      "size": [
+        8,
+        0.12,
+        1.4
+      ],
+      "color": "#eeeee5",
+      "extras": {}
+    },
+    {
+      "name": "End wall",
+      "position": [
+        0,
+        3,
+        0.7
+      ],
+      "size": [
+        8,
+        0.12,
+        1.4
+      ],
+      "color": "#eeeee5",
+      "extras": {}
+    },
+    {
+      "name": "Divider",
+      "position": [
+        0,
+        -2,
+        0.65
+      ],
+      "size": [
+        0.12,
+        2,
+        1.3
+      ],
+      "color": "#eeeee5",
+      "extras": {}
+    },
+    {
+      "name": "Divider",
+      "position": [
+        0,
+        2,
+        0.65
+      ],
+      "size": [
+        0.12,
+        2,
+        1.3
+      ],
+      "color": "#eeeee5",
+      "extras": {}
+    },
+    {
+      "name": "Soft rug",
+      "position": [
+        -2,
+        0,
+        0.07
+      ],
+      "size": [
+        2.9,
+        3,
+        0.04
+      ],
+      "color": "#ebe5d7",
+      "extras": {}
+    },
+    {
+      "name": "Sofa seat",
+      "position": [
+        -2,
+        1.3,
+        0.4
+      ],
+      "size": [
+        2.4,
+        0.8,
+        0.4
+      ],
+      "color": "#587c87",
+      "extras": {}
+    },
+    {
+      "name": "Sofa back",
+      "position": [
+        -2,
+        1.65,
+        0.8
+      ],
+      "size": [
+        2.4,
+        0.22,
+        0.8
+      ],
+      "color": "#587c87",
+      "extras": {}
+    },
+    {
+      "name": "Sofa arm",
+      "position": [
+        -3.2,
+        1.3,
+        0.65
+      ],
+      "size": [
+        0.2,
+        0.9,
+        0.5
+      ],
+      "color": "#587c87",
+      "extras": {}
+    },
+    {
+      "name": "Sofa arm",
+      "position": [
+        -0.8,
+        1.3,
+        0.65
+      ],
+      "size": [
+        0.2,
+        0.9,
+        0.5
+      ],
+      "color": "#587c87",
+      "extras": {}
+    },
+    {
+      "name": "Cushion",
+      "position": [
+        -2.8,
+        1.35,
+        0.68
+      ],
+      "size": [
+        0.65,
+        0.6,
+        0.12
+      ],
+      "color": "#759298",
+      "extras": {}
+    },
+    {
+      "name": "Cushion",
+      "position": [
+        -2,
+        1.35,
+        0.68
+      ],
+      "size": [
+        0.65,
+        0.6,
+        0.12
+      ],
+      "color": "#759298",
+      "extras": {}
+    },
+    {
+      "name": "Cushion",
+      "position": [
+        -1.2,
+        1.35,
+        0.68
+      ],
+      "size": [
+        0.65,
+        0.6,
+        0.12
+      ],
+      "color": "#759298",
+      "extras": {}
+    },
+    {
+      "name": "Coffee table",
+      "position": [
+        -2,
+        -0.2,
+        0.35
+      ],
+      "size": [
+        1.3,
+        0.7,
+        0.12
+      ],
+      "color": "#976e4e",
+      "extras": {}
+    },
+    {
+      "name": "Table leg",
+      "position": [
+        -2.5,
+        -0.2,
+        0.19
+      ],
+      "size": [
+        0.12,
+        0.4,
+        0.32
+      ],
+      "color": "#976e4e",
+      "extras": {}
+    },
+    {
+      "name": "Table leg",
+      "position": [
+        -1.5,
+        -0.2,
+        0.19
+      ],
+      "size": [
+        0.12,
+        0.4,
+        0.32
+      ],
+      "color": "#976e4e",
+      "extras": {}
+    },
+    {
+      "name": "TV cabinet",
+      "position": [
+        -2,
+        -2.5,
+        0.35
+      ],
+      "size": [
+        2.8,
+        0.5,
+        0.65
+      ],
+      "color": "#9b7952",
+      "extras": {}
+    },
+    {
+      "name": "演示电视",
+      "position": [
+        -2,
+        -2.62,
+        1.2
+      ],
+      "size": [
+        1.65,
+        0.08,
+        0.94
+      ],
+      "color": "#213740",
+      "extras": {
+        "entity_id": "media_player.demo_tv",
+        "label": "演示电视",
+        "screen_entity": "media_player.demo_tv"
+      }
+    },
+    {
+      "name": "起居室主灯",
+      "position": [
+        -3.86,
+        0,
+        1.2
+      ],
+      "size": [
+        0.08,
+        2.2,
+        0.08
+      ],
+      "color": "#ffcf77",
+      "extras": {
+        "entity_id": "light.demo_living",
+        "label": "起居室主灯",
+        "emissive_entity": "light.demo_living"
+      }
+    },
+    {
+      "name": "演示机器人",
+      "position": [
+        -0.55,
+        -2.2,
+        0.2
+      ],
+      "size": [
+        0.36,
+        0.4,
+        0.25
+      ],
+      "color": "#f6f5ee",
+      "extras": {
+        "entity_id": "vacuum.demo_robot",
+        "label": "演示机器人"
+      }
+    },
+    {
+      "name": "演示中央空调",
+      "position": [
+        -2,
+        2.88,
+        1.5
+      ],
+      "size": [
+        1.6,
+        0.2,
+        0.28
+      ],
+      "color": "#fafafa",
+      "extras": {
+        "entity_id": "climate.demo_vrf",
+        "label": "演示中央空调"
+      }
+    },
+    {
+      "name": "Bed base",
+      "position": [
+        2,
+        1,
+        0.28
+      ],
+      "size": [
+        2,
+        2.2,
+        0.4
+      ],
+      "color": "#926e4f",
+      "extras": {}
+    },
+    {
+      "name": "Mattress",
+      "position": [
+        2,
+        1,
+        0.56
+      ],
+      "size": [
+        1.94,
+        2.16,
+        0.28
+      ],
+      "color": "#f9f5e9",
+      "extras": {}
+    },
+    {
+      "name": "Blanket",
+      "position": [
+        2,
+        0.6,
+        0.73
+      ],
+      "size": [
+        1.98,
+        1.25,
+        0.08
+      ],
+      "color": "#b87855",
+      "extras": {}
+    },
+    {
+      "name": "Pillow",
+      "position": [
+        1.5,
+        1.75,
+        0.79
+      ],
+      "size": [
+        0.7,
+        0.45,
+        0.15
+      ],
+      "color": "#fffdf5",
+      "extras": {}
+    },
+    {
+      "name": "Pillow",
+      "position": [
+        2.5,
+        1.75,
+        0.79
+      ],
+      "size": [
+        0.7,
+        0.45,
+        0.15
+      ],
+      "color": "#fffdf5",
+      "extras": {}
+    },
+    {
+      "name": "Bedhead",
+      "position": [
+        2,
+        2.18,
+        0.8
+      ],
+      "size": [
+        2.1,
+        0.12,
+        1.3
+      ],
+      "color": "#ceb694",
+      "extras": {}
+    },
+    {
+      "name": "Nightstand",
+      "position": [
+        3.4,
+        1.8,
+        0.35
+      ],
+      "size": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "color": "#e4c79d",
+      "extras": {}
+    },
+    {
+      "name": "演示阅读灯",
+      "position": [
+        3.4,
+        1.8,
+        0.9
+      ],
+      "size": [
+        0.26,
+        0.26,
+        0.3
+      ],
+      "color": "#ffde99",
+      "extras": {
+        "entity_id": "light.demo_bedroom",
+        "label": "演示阅读灯",
+        "emissive_entity": "light.demo_bedroom"
+      }
+    },
+    {
+      "name": "Wardrobe",
+      "position": [
+        1,
+        -2.65,
+        0.9
+      ],
+      "size": [
+        0.98,
+        0.6,
+        1.8
+      ],
+      "color": "#e6decb",
+      "extras": {}
+    },
+    {
+      "name": "Wardrobe",
+      "position": [
+        2,
+        -2.65,
+        0.9
+      ],
+      "size": [
+        0.98,
+        0.6,
+        1.8
+      ],
+      "color": "#e6decb",
+      "extras": {}
+    },
+    {
+      "name": "Wardrobe",
+      "position": [
+        3,
+        -2.65,
+        0.9
+      ],
+      "size": [
+        0.98,
+        0.6,
+        1.8
+      ],
+      "color": "#e6decb",
+      "extras": {}
+    },
+    {
+      "name": "演示窗帘",
+      "position": [
+        3.86,
+        -0.2,
+        1.05
+      ],
+      "size": [
+        0.08,
+        2,
+        1.9
+      ],
+      "color": "#f2eee2",
+      "extras": {
+        "entity_id": "cover.demo_curtain",
+        "label": "演示窗帘",
+        "curtain_entity": "cover.demo_curtain"
+      }
+    },
+    {
+      "name": "保护电源",
+      "position": [
+        0.13,
+        -2.1,
+        0.9
+      ],
+      "size": [
+        0.1,
+        0.16,
+        0.2
+      ],
+      "color": "#e9ece5",
+      "extras": {
+        "entity_id": "switch.demo_supply",
+        "label": "保护电源"
+      }
+    },
+    {
+      "name": "Plant pot",
+      "position": [
+        -3.5,
+        2.5,
+        0.25
+      ],
+      "size": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "color": "#c0b2a0",
+      "extras": {}
+    },
+    {
+      "name": "Plant foliage",
+      "position": [
+        -3.5,
+        2.5,
+        0.64
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.55
+      ],
+      "color": "#668960",
+      "extras": {}
+    },
+    {
+      "name": "Plant pot",
+      "position": [
+        0.6,
+        -2.1,
+        0.25
+      ],
+      "size": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "color": "#c0b2a0",
+      "extras": {}
+    },
+    {
+      "name": "Plant foliage",
+      "position": [
+        0.6,
+        -2.1,
+        0.64
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.55
+      ],
+      "color": "#668960",
+      "extras": {}
+    }
+  ]
+}

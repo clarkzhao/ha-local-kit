@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HA Local Kit · Fictional demo</title>
+<style>
+:root{--primary-text-color:#26362e;--secondary-text-color:#728278;--primary-color:#356956;--divider-color:#e4e9e1;--card-background-color:#fff;--ha-card-background:#fff;font-family:system-ui,"Microsoft YaHei",sans-serif;color:#26362e;background:#f3f5f0}
+body{max-width:1320px;margin:32px auto;padding:0 24px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}h1{font-size:26px;margin:0}small{color:#728278;display:block;margin-top:8px}.badge{padding:8px 12px;border-radius:20px;background:#e1ebdc;font-size:12px}button{cursor:pointer;font:inherit;padding:9px 16px;border:1px solid #d6dfd2;border-radius:10px;background:white;color:inherit;margin:0 8px 18px 0}button[aria-pressed=true]{background:#356956;color:white}section[hidden]{display:none}.columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}.column{min-width:0;display:grid;align-content:start;gap:18px}apexcharts-card{height:350px}ha-card{display:block;border-radius:18px;background:white}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 20px}.metric{background:white;border:1px solid #e2e9df;border-radius:16px;padding:18px}.metric label{font-size:12px;color:#728278}.metric strong{font-size:26px;display:block;margin-top:10px}.note{padding:16px 0;color:#728278;font-size:12px}@media(max-width:700px){body{padding:0 12px;margin-top:18px}.columns{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}header{gap:12px}h1{font-size:21px}.badge{font-size:10px}}
+</style>
+<header><div><h1>HA Local Kit</h1><small>让设备接入、房间与账单各就其位</small></div><span class="badge">FICTIONAL DEMO · 全部为虚构数据</span></header>
+<nav><button id="show-home" aria-pressed="true">立体房间</button><button id="show-energy" aria-pressed="false">用电与账单</button></nav>
+<section id="home"><home-digital-card></home-digital-card></section>
+<section id="energy" hidden><div class="metrics" id="metrics"></div><div class="columns"></div></section>
+<p class="note">演示不连接真实 Home Assistant，不登录任何厂商账号，不控制家电。所有户型、设备和用电数字均为合成示例。</p>
+<script type="module" src="demo.js"></script></html>

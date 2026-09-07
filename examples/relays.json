@@ -1,0 +1,6 @@
+[
+  {"gateway": "192.0.2.10", "gateway_port": 8888, "listen_port": 18888},
+  {"gateway": "192.0.2.20", "gateway_port": 9002, "listen_port": 19002},
+  {"gateway": "192.0.2.30", "gateway_port": 3000, "listen_port": 13000},
+  {"gateway": "192.0.2.30", "gateway_port": 3001, "listen_port": 13001}
+]

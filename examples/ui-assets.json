@@ -1,0 +1,16 @@
+[
+  {
+    "name": "apexcharts-card",
+    "version": "2.2.3",
+    "url": "https://github.com/RomRider/apexcharts-card/releases/download/v2.2.3/apexcharts-card.js",
+    "license_url": "https://raw.githubusercontent.com/RomRider/apexcharts-card/v2.2.3/LICENSE",
+    "sha256": "346780707773fb90c45e9eeaf8acb010d16a8089e86563a242cc4e1d8995f718"
+  },
+  {
+    "name": "flex-table-card",
+    "version": "1.4",
+    "url": "https://raw.githubusercontent.com/custom-cards/flex-table-card/1058b2c25fe884b75206d5e789b1bb4c3a44253f/flex-table-card.js",
+    "license_url": "https://raw.githubusercontent.com/custom-cards/flex-table-card/1058b2c25fe884b75206d5e789b1bb4c3a44253f/LICENSE",
+    "sha256": "cc9f70b4573fb32c9d652da6e16c08da9859dfc61a8ae0fa29d765eff6b7522d"
+  }
+]
