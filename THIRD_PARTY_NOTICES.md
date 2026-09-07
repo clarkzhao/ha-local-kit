@@ -2,6 +2,7 @@
 
 - 核心 Python、房间生成、3D 卡片和合成演示：本项目，MIT。
 - `extras/lifesmart/`：对 [MapleEve/lifesmart-for-homeassistant](https://github.com/MapleEve/lifesmart-for-homeassistant) 的兼容补丁；包含匹配上游的代码片段，按 GPL-3.0 分发。许可证见 `licenses/GPL-3.0.txt`。上游完整驱动未复制到本仓库，也不打包进 MIT Python wheel。
+- `tests/test_lifesmart_startup.py` 使用匹配补丁的片段，单独标注 GPL-3.0，不改变其他核心测试与 Python 包的 MIT 许可。
 - Three.js 0.180.0：MIT；通过 npm 获取，构建产物保留 `THREE-LICENSE.txt`。
 - esbuild 0.25.10：MIT，构建依赖。
 - [ApexCharts Card](https://github.com/RomRider/apexcharts-card) v2.2.3：上游发布模块及其许可证由下载脚本获取；发布模块内含的依赖保留原始声明，不按本项目 MIT 重新授权。

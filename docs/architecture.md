@@ -40,6 +40,12 @@ flowchart TB
 
 `ha_local_kit/` 是可安装核心；`frontend/` 是可独立构建的卡片与虚构演示；`examples/` 只含人工构造的映射；`extras/` 保留实验性账号工具和单独授权的上游兼容补丁。没有自动修改 HA `.storage` 的公开安装脚本。
 
+## 接入与诊断的 Interface
+
+云鲸 `local_tool.py` 将账号行选择、完整身份核对、超时／断连、私有文件写入和报告白名单集中在同一 Module。外部 Interface 是 `identity`、`diagnose` 与离线 `explain`；上游客户端和合成客户端在 `query(identity, factory, ...)` 这个真实 Seam 替换。输入身份留在私有目录，输出诊断不能携带原始身份或任意字段。诊断解释观测，不接管 HA coordinator 的控制许可。
+
+LifeSmart 启动补丁的 Interface 是独立副本路径和 `--check`。匹配、语法校验、重复应用、换行和替换行为由工具封装；安装与 HA 重启留给部署方。生命周期测试验证永久连接属于后台工作且可取消，不调用真实家电。
+
 ## 下一步
 
 先补省份字段夹具、布局校验与可访问性，再考虑可视化编辑器、HACS 打包和上游 PR。Energy 长期统计回填应独立设计并验证去重、修订和跨年行为，不能通过简单增加 `state_class` 冒充已经完成。

@@ -17,7 +17,7 @@ SGCC electricity collection with honest daily/monthly timelines, and device conn
 - **房间看板生成器**：显式配置房间和实体，生成 HA 原生 Sections；允许给照明设置快捷开关，保护常供电设备。
 - **3D 自定义卡片**：Three.js / GLB，房间筛选、模型拾取、灯光／窗帘／电视状态以及 HA 原生设备详情。相机和几何资源随卡片释放。
 - **固定 TCP 转发**：一个进程维护多条 loopback 转发，用于已确认宿主可达、HA 虚拟机不可达的情况。
-- **设备辅助贡献**：LifeSmart VRF 补丁与隔离回归用例、中国区云鲸短信身份准备工具、LG webOS 网络配置经验。
+- **设备辅助贡献**：LifeSmart VRF／启动阻塞补丁与隔离回归用例、云鲸中国区身份接入向导和只读不可用诊断、LG webOS 网络配置经验。
 - **Agent CLI**：HA REST 的受限命令入口、dry-run、独立令牌文件、拒绝带令牌重定向；不会因为网络错误自动重试设备动作。
 
 ![合成用电数据的日月看板](docs/images/electricity.png)
@@ -53,6 +53,8 @@ Windows 激活命令为 `.venv\Scripts\Activate.ps1`；CLI 输出中文时建议
 - [3D 模型格式和 Blender 工作流](docs/3d.md)
 - [Module 设计与维护边界](docs/architecture.md)
 - [公开代码与私有部署的隔离规则](CONTRIBUTING.md#公开仓库与私有部署)
+- [云鲸身份确认、HA 配置与不可用诊断](extras/narwal/README.md)
+- [LifeSmart VRF 与本地连接启动修复](extras/lifesmart/README.md)
 
 ## 本地演示
 

@@ -1,0 +1,13 @@
+{
+  "query_accepted": true,
+  "query_result_code": 1,
+  "working_status": "CHARGED",
+  "supports_broadcasts": false,
+  "is_docked": true,
+  "is_station_active": true,
+  "blocks_robot_start_for_dock_task": true,
+  "has_recent_dock_drying_status": true,
+  "has_dock_drying_timer_snapshot": false,
+  "has_unmapped_active_dock_task": false,
+  "has_error": false
+}
