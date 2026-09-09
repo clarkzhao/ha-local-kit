@@ -74,6 +74,8 @@ python -m http.server 8090 --bind 127.0.0.1 --directory frontend/dist
 
 ## 验证与贡献
 
+使用日账单分析节费时，先阅读[用电优化方法](docs/electricity-optimization.md)：区分节电与峰谷移时，明确数据日期和估算条件，不把总表读数当作分设备能耗。
+
 ```bash
 python -m pip install -e '.[dev]'
 python -m unittest discover -s tests -v

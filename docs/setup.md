@@ -40,11 +40,22 @@ chmod 700 .local/sgcc-state
 
 ```bash
 ha-local-kit-sgcc --state-dir .local/sgcc-state --ha-dir /path/to/ha-config/sgcc
-# 之后用导出的私有会话采集；不需要保持原浏览器打开。
+# 兼容模式：用导出的私有会话采集。
 ha-local-kit-sgcc --headless --state-dir .local/sgcc-state --ha-dir /path/to/ha-config/sgcc
+
+# 优先复用上面已登录的专用 Chrome；未运行时用同一配置目录启动无界面 Chrome。
+ha-local-kit-sgcc --headless --prefer-browser \
+  --profile-dir "$PWD/.local/sgcc-browser" \
+  --state-dir "$PWD/.local/sgcc-state" --ha-dir /path/to/ha-config/sgcc
 ```
 
-会话失效或安全验证再次出现，需要人工重新登录。不要反复自动重试。建议系统调度器每天执行一次；并发调用由本机文件锁阻止。当前命令有 240 秒总超时。禁止将 state-dir 放入 HA 的 `www` 或任何公开目录。
+`--cdp-url` 可覆盖默认本机 CDP 地址，仍应只连接国网专用浏览器。不要使用个人日常 Chrome 配置目录。复用时会导航现有国网标签页，采集后保持浏览器打开；后备模式关闭自己启动的浏览器。若配置目录已被其他 Chrome 占用，保留 Chrome 的锁并让本次采集失败，不删除锁或强杀进程。
+
+可从系统调度器每天执行一次开始；需要给网站正常续期机会时，可试用每 6 小时一次，例如 02:30、08:30、14:30、20:30。调度器需传入绝对路径。增加正常访问频率不能保证延长服务器最长登录期限；会话失效或安全验证再次出现，仍需人工登录，不做密集失败重试。并发采集有本机文件锁，单次有 240 秒总超时。
+
+采集会重新加载页面核验账户，不能仅凭缓存中的“退出”判断已登录。明确的认证拒绝显示 `login_required`，无法确认账户但没有认证拒绝证据时仍显示 `account_unconfirmed`。已核验账户后保存更新的会话；sessionStorage 只在空标签页初始化，避免导航时覆盖网站刚更新的令牌。看板在失败时标明保留的是上次成功数据。
+
+禁止将 state-dir、profile-dir 放入 HA 的 `www`、公开仓库或任何公开目录。目录里包括 Cookie、IndexedDB、会话令牌和家庭历史，即使不含密码也不是可发布资料。
 
 将 `ha_local_kit/sgcc/snapshot.py` 复制到 HA 的 `/config/sgcc/snapshot.py`。生成原生传感器：
 
