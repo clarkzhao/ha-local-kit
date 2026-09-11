@@ -83,7 +83,8 @@ def build_view():
             dict(type='heading',heading='用电与账单',heading_style='title',icon='mdi:transmission-tower'),
             dict(type='markdown',grid_options=dict(columns='full',rows='auto'),content=
                 "{% set s = states('sensor.sgcc_status') %}\n"
-                "**国家电网** &nbsp; {{ '● 数据正常' if s == 'ok' else '⚠ ' ~ {'stale':'数据已过期','login_required':'需要人工登录','collection_failed':'采集失败','account_changed':'户号变化','data_incomplete':'数据不完整'}.get(s,s) }}\n\n"
+                "**国家电网** &nbsp; {{ '● 数据正常' if s == 'ok' else '⚠ ' ~ {'stale':'数据已过期','login_required':'登录已失效，需要人工登录','collection_failed':'采集失败','account_changed':'户号变化','account_unconfirmed':'未能核验户号','data_incomplete':'数据不完整'}.get(s,s) }}\n\n"
+                "{% if s != 'ok' %}**当前显示上次成功采集的保留数据。**{% if s == 'login_required' %} 请在国网专用浏览器中重新登录。{% endif %}\n\n{% endif %}"
                 "日用电截至 **{{ states('sensor.sgcc_date') }}** · 最近账单 **{{ states('sensor.sgcc_bill_month') }}** · "
                 "更新 {{ as_local(as_datetime(states('sensor.sgcc_updated'))).strftime('%m-%d %H:%M') if has_value('sensor.sgcc_updated') else '等待数据' }}"),
             tile('daily','最近日用电','mdi:lightning-bolt'),

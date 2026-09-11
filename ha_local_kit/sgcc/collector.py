@@ -3,7 +3,7 @@
 Browser state stays private on the Mac. HA receives numeric/date data only.
 """
 import argparse
-from datetime import datetime, timedelta
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -13,6 +13,7 @@ import signal
 import sqlite3
 import sys
 import time
+from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
 from .page_data import number, daily_rows, read_components, monthly_summary
@@ -39,53 +40,116 @@ def account(text):
     return hashlib.sha256(found.group(1).encode()).hexdigest()[:16]
 
 
-def check_page(page):
+class AuthHealth:
+    """Remember only authentication rejection, never response bodies or tokens."""
+    def __init__(self):
+        self.rejected = False
+
+    def observe(self, response):
+        try:
+            url = urlsplit(response.url)
+            if url.hostname != 'www.95598.cn' or not url.path.startswith('/api/'):
+                return
+            if response.status == 401:
+                self.rejected = True
+                return
+            # Observed rejection at the OAuth authorization endpoint. A later
+            # successfully loaded account takes precedence over this hint.
+            if url.path == '/api/oauth2/oauth/authorize':
+                body = response.json()
+                if isinstance(body, dict) and str(body.get('code')) == '20103':
+                    self.rejected = True
+        except Exception:
+            pass
+
+
+def session_seed(session):
+    # Seed an empty tab only. Re-injecting the saved values on every navigation
+    # can overwrite tokens that the site has just refreshed in this browser.
+    return ('if(location.origin === "https://www.95598.cn" && sessionStorage.length === 0) {'
+            ' const data = ' + json.dumps(session) +
+            '; for(const [k,v] of Object.entries(data)) sessionStorage.setItem(k,v); }')
+
+
+def check_page(page, health=None):
     if '/login' in page.url:
         raise RuntimeError('login_required')
     if '退出' not in page.locator('body').inner_text():
         raise RuntimeError('login_required')
+    if health and health.rejected:
+        raise RuntimeError('login_required')
 
 
-def visit(page, route):
-    if page.url.split('?')[0] != ORIGIN + route:
-        page.goto(ORIGIN + route, wait_until='domcontentloaded', timeout=40000)
+def visit(page, route, health=None):
+    if health:
+        health.rejected = False
+    # A cached visible account is not proof of a still-valid server session.
+    page.goto(ORIGIN + route, wait_until='domcontentloaded', timeout=40000)
     # Account data is asynchronous; a fixed short sleep mislabels slow loading.
     try:
         page.wait_for_function(r"/用电户号\s*[:：]\s*\d{8,}/.test(document.body.innerText)", timeout=35000)
     except Exception:
-        check_page(page)
+        check_page(page, health)
         raise RuntimeError('account_unconfirmed')
     check_page(page)
 
 
-def fetch(headless=False):
+def save_session(context, page):
+    state = context.storage_state(indexed_db=True)
+    state['cookies'] = [c for c in state['cookies'] if c['domain'].lstrip('.') in ('95598.cn', 'www.95598.cn')]
+    state['origins'] = [o for o in state['origins'] if o['origin'] == ORIGIN]
+    atomic(DATA / 'session.private.json', state)
+    atomic(DATA / 'session-storage.private.json', page.evaluate('Object.fromEntries(Object.entries(sessionStorage))'))
+
+
+def fetch(headless=False, prefer_browser=False, profile_dir=None):
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         owned = headless
+        browser = None
+        if prefer_browser:
+            try:
+                browser = p.chromium.connect_over_cdp(CDP_URL, timeout=4000)
+                owned = False
+            except Exception:
+                owned = True
         if owned:
-            if not (DATA / 'session.private.json').is_file():
-                raise RuntimeError('login_required')
-            browser = p.chromium.launch(channel='chrome', headless=True)
-            context = browser.new_context(storage_state=str(DATA / 'session.private.json'), locale='zh-CN', timezone_id='Asia/Shanghai')
+            if profile_dir:
+                # The profile is dedicated to SGCC. Chrome enforces a profile
+                # lock; never kill another browser or clear its lock files.
+                context = p.chromium.launch_persistent_context(str(profile_dir),
+                    channel='chrome', headless=True, locale='zh-CN', timezone_id='Asia/Shanghai')
+            else:
+                if not (DATA / 'session.private.json').is_file():
+                    raise RuntimeError('login_required')
+                browser = p.chromium.launch(channel='chrome', headless=True)
+                context = browser.new_context(storage_state=str(DATA / 'session.private.json'), locale='zh-CN', timezone_id='Asia/Shanghai')
             session = json.loads((DATA / 'session-storage.private.json').read_text()) if (DATA / 'session-storage.private.json').exists() else {}
-            context.add_init_script('if(location.origin === "https://www.95598.cn") { const data = ' + json.dumps(session) + '; for(const [k,v] of Object.entries(data)) sessionStorage.setItem(k,v); }')
+            context.add_init_script(session_seed(session))
             page = context.new_page()
         else:
-            browser = p.chromium.connect_over_cdp(CDP_URL)
-            page = next(pg for ctx in browser.contexts for pg in ctx.pages if pg.url.startswith(ORIGIN + '/'))
+            browser = browser or p.chromium.connect_over_cdp(CDP_URL)
+            page = next((pg for ctx in browser.contexts for pg in ctx.pages if pg.url.startswith(ORIGIN + '/')), None)
+            if page is None:
+                page = browser.contexts[0].new_page()
             context = page.context
+        health = AuthHealth()
+        page.on('response', health.observe)
         try:
-            visit(page, '/osgweb/my95598')
+            visit(page, '/osgweb/my95598', health)
             home = page.locator('body').inner_text()
             identity = account(home)
             pin = DATA / 'account-pin.json'
             if pin.exists() and json.loads(pin.read_text())['id'] != identity:
                 raise RuntimeError('account_changed')
+            # Keep renewed credentials even if a later billing widget fails.
+            # Only save after the loaded account has passed the identity check.
+            save_session(context, page)
             def amount(label):
                 match = re.search(label + r'\s*[:：]\s*(-?[\d,.]+)\s*元', home)
                 return number(match.group(1)) if match else None
             balance, due = amount('账户余额'), amount('应交金额')
-            visit(page, '/osgweb/electricityCharge')
+            visit(page, '/osgweb/electricityCharge', health)
             if account(page.locator('body').inner_text()) != identity:
                 raise RuntimeError('account_changed')
             deadline = time.monotonic() + 30
@@ -113,11 +177,7 @@ def fetch(headless=False):
                 raise RuntimeError('data_incomplete')
             now = datetime.now(ZONE).isoformat(timespec='seconds')
             # Store only this dedicated SGCC session; files never enter HA/www.
-            state = context.storage_state(indexed_db=True)
-            state['cookies'] = [c for c in state['cookies'] if c['domain'].lstrip('.') in ('95598.cn', 'www.95598.cn')]
-            state['origins'] = [o for o in state['origins'] if o['origin'] == ORIGIN]
-            atomic(DATA / 'session.private.json', state)
-            atomic(DATA / 'session-storage.private.json', page.evaluate('Object.fromEntries(Object.entries(sessionStorage))'))
+            save_session(context, page)
             atomic(pin, {'id': identity})
             with sqlite3.connect(DATA / 'history.sqlite3') as db:
                 db.execute('CREATE TABLE IF NOT EXISTS daily (account TEXT, day TEXT, payload TEXT, PRIMARY KEY(account,day))')
@@ -126,6 +186,7 @@ def fetch(headless=False):
                 db.executemany('INSERT OR REPLACE INTO monthly VALUES(?,?,?)', [(identity, r['month'], json.dumps(r)) for r in months])
             latest, bill = daily[-1], months[-1]
             snapshot = dict(status='ok', fetched_at=now, attempted_at=now, source_date=latest['date'],
+                browser_mode='attached' if not owned else 'persistent' if profile_dir else 'exported',
                 daily_usage=latest['total_usage'], valley_usage=latest['valley_usage'], flat_usage=latest['flat_usage'],
                 balance=balance, amount_due=due, bill_month=bill['month'], month_usage=bill['total_usage'], month_charge=bill['total_charge'],
                 year=monthly.get('year'), year_usage=monthly.get('yearly_usage'), year_charge=monthly.get('yearly_charge'),
@@ -134,8 +195,11 @@ def fetch(headless=False):
             atomic(HA / 'snapshot.json', snapshot)
             print(json.dumps({k: snapshot[k] for k in ('status','source_date','daily_usage','bill_month','month_usage','month_charge','daily_count')}, ensure_ascii=False))
         finally:
+            page.remove_listener('response', health.observe)
             if owned:
-                browser.close()
+                context.close()
+                if browser:
+                    browser.close()
 
 
 def main():
@@ -143,6 +207,8 @@ def main():
     global DATA, HA, CDP_URL
     parser = argparse.ArgumentParser()
     parser.add_argument('--headless', action='store_true')
+    parser.add_argument('--prefer-browser', action='store_true', help='Reuse the dedicated signed-in Chrome when available')
+    parser.add_argument('--profile-dir', type=Path, help='Dedicated SGCC profile for fallback; never use a personal Chrome profile')
     parser.add_argument('--state-dir', type=Path, required=True)
     parser.add_argument('--ha-dir', type=Path, required=True)
     parser.add_argument('--cdp-url', default=CDP_URL)
@@ -161,7 +227,7 @@ def main():
                 raise RuntimeError('collection_timeout')
             signal.signal(signal.SIGALRM, deadline)
             signal.alarm(240)
-            fetch(args.headless)
+            fetch(args.headless, args.prefer_browser, args.profile_dir)
         except Exception as exc:
             reason = str(exc) if str(exc) in ('login_required','account_changed','account_unconfirmed','data_incomplete') else 'collection_failed'
             snapshot = json.loads((DATA / 'snapshot.json').read_text()) if (DATA / 'snapshot.json').exists() else {}
@@ -169,7 +235,7 @@ def main():
                             message='需要重新人工登录' if reason == 'login_required' else '采集未成功，保留旧值；请检查会话或页面')
             atomic(DATA / 'snapshot.json', snapshot)
             atomic(HA / 'snapshot.json', snapshot)
-            print(json.dumps({'status': reason}, ensure_ascii=False))
+            print(json.dumps({'status': reason, 'attempted_at': snapshot['attempted_at']}, ensure_ascii=False))
             sys.exit(1)
         finally:
             signal.alarm(0)
