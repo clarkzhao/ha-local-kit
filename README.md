@@ -54,7 +54,7 @@ Windows 激活命令为 `.venv\Scripts\Activate.ps1`；CLI 输出中文时建议
 - [Module 设计与维护边界](docs/architecture.md)
 - [公开代码与私有部署的隔离规则](CONTRIBUTING.md#公开仓库与私有部署)
 - [云鲸身份确认、HA 配置与不可用诊断](extras/narwal/README.md)
-- [LifeSmart VRF 与本地连接启动修复](extras/lifesmart/README.md)
+- [LifeSmart VRF、灯带控制、状态同步与启动修复](extras/lifesmart/README.md)
 
 ## 本地演示
 
